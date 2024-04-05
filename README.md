@@ -50,3 +50,10 @@ Caso queira rodar localmente, mas acessar a API através da rede, para os casos 
 ```bash
 python manage.py runserver 0.0.0.0/8000
 ```
+
+### Criando super usuário
+Para teste, quando for necessário criar um super usuário, utilize o comando:
+```bash
+python manage.py createsuperuser
+```
+Informe o `username` e o `password`, não é necessário informar o e-mail.
