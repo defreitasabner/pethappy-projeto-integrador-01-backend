@@ -1,9 +1,11 @@
 from django.db import models
+from django.contrib.auth.models import User 
+from django.db import transaction
 
 class Cliente(models.Model):
     nome = models.CharField(
         verbose_name = 'Nome do Cliente',
-        max_length = 200,
+        max_length = 150,
         null = False,
         blank = False,
     )
@@ -70,3 +72,32 @@ class Telefone(models.Model):
 
     def __str__(self) -> str:
         return self.numero
+    
+class Funcionario(models.Model):
+    usuario = models.OneToOneField(
+        User,
+        verbose_name = 'Usuário',
+        related_name = 'funcionario',
+        on_delete = models.CASCADE,
+    )
+    nome = models.CharField(
+        verbose_name = 'Nome do Funcionário',
+        max_length = 150,
+        null = False,
+        blank = False,
+    )
+    telefone = models.CharField(
+        verbose_name = 'Telefone do Funcionário',
+        max_length = 15,
+        null = False,
+        blank = False,
+    )
+
+    @transaction.atomic
+    def delete(self, *args, **kwargs):
+        super().delete(*args, **kwargs)
+        if self.usuario:
+            self.usuario.delete()
+    
+    def __str__(self) -> str:
+        return self.nome    
