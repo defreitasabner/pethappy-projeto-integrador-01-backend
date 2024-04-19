@@ -11,7 +11,6 @@ class EnderecoSerializer(serializers.ModelSerializer):
         fields = ('id', 'cidade', 'bairro', 'rua', 'numero', 'complemento')
 
 class TelefoneSerializer(serializers.ModelSerializer):
-    id = serializers.IntegerField()
     class Meta:
         model = Telefone
         fields = ('id', 'numero', 'is_contato_emergencia')
@@ -33,18 +32,43 @@ class ClienteSerializer(serializers.ModelSerializer):
             telefone = Telefone(cliente = cliente, **dados_telefone)
             telefone.save()
         return cliente
+
+class UpdateTelefoneSerializer(serializers.ModelSerializer):
+    id = serializers.IntegerField()
+    class Meta:
+        model = Telefone
+        fields = ('id', 'numero', 'is_contato_emergencia')
+
+class UpdateClienteSerializer(serializers.ModelSerializer):
+    telefones = UpdateTelefoneSerializer(many = True, required = False)
+    endereco = EnderecoSerializer(required = False)
     
+    class Meta:
+        model = Cliente
+        fields = ('id', 'nome', 'endereco', 'telefones')
+
     @transaction.atomic
     def update(self, instance, validated_data):
-        endereco = Endereco.objects.filter(cliente = instance)
-        endereco.update(**validated_data['endereco'])
-        for dados_telefone in validated_data['telefones']:
-            telefone = Telefone.objects.filter(id = dados_telefone['id'])
-            telefone.update(**dados_telefone)
-        del validated_data['endereco']
-        del validated_data['telefones']
+        if validated_data.get('endereco'):
+            endereco = Endereco.objects.filter(cliente = instance)
+            endereco.update(**validated_data['endereco'])
+            del validated_data['endereco']
+        if validated_data.get('telefones'):
+            for dados_telefone in validated_data['telefones']:
+                if dados_telefone['id'] == 0:
+                    del dados_telefone['id']
+                    telefone = Telefone(cliente = instance, **dados_telefone)
+                    telefone.save()
+                elif dados_telefone['id'] == -1:
+                    telefone = Telefone.objects.filter(numero = dados_telefone['numero']).first()
+                    if telefone:
+                        telefone.delete()
+                else:
+                    telefone = Telefone.objects.filter(id = dados_telefone['id'])
+                    telefone.update(**dados_telefone)
+            del validated_data['telefones']
         return super().update(instance, validated_data)
-    
+
 class UsuarioSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
