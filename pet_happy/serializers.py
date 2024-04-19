@@ -1,7 +1,8 @@
 from rest_framework import serializers
 from django.db import transaction
+from django.contrib.auth.models import User
 
-from pet_happy.models import Cliente, Telefone, Endereco
+from pet_happy.models import Cliente, Telefone, Endereco, Funcionario
 
 
 class EnderecoSerializer(serializers.ModelSerializer):
@@ -42,4 +43,56 @@ class ClienteSerializer(serializers.ModelSerializer):
             telefone.update(**dados_telefone)
         del validated_data['endereco']
         del validated_data['telefones']
+        return super().update(instance, validated_data)
+    
+class UsuarioSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ('id', 'username', 'password', 'email')
+        extra_kwargs = {
+            'password': { 'write_only': True }
+        }
+
+class FuncionarioSerializer(serializers.ModelSerializer):
+    usuario = UsuarioSerializer()
+    class Meta:
+        model = Funcionario
+        fields = ('id', 'nome', 'telefone', 'usuario',)
+
+    @transaction.atomic
+    def create(self, validated_data):
+        usuario = User.objects.create_user(
+            username = validated_data['usuario']['username'],
+            password = validated_data['usuario']['password'],
+            email = validated_data['usuario']['email'],
+        )
+        del validated_data['usuario']
+        funcionario = Funcionario(usuario =  usuario, **validated_data)
+        funcionario.save()
+        return funcionario
+
+class UpdateUsuarioSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ('password', 'email')
+        extra_kwargs = {
+            'password': { 'required': False, 'write_only': True },
+            'email': { 'required': False }
+        }
+
+class UpdateFuncionarioSerializer(serializers.ModelSerializer):
+    usuario = UpdateUsuarioSerializer(required = False)
+    class Meta:
+        model = Funcionario
+        fields = ('nome', 'telefone', 'usuario',)
+
+    @transaction.atomic
+    def update(self, instance, validated_data):
+        print(validated_data)
+        if validated_data['usuario']['email']:
+            instance.usuario.email = validated_data['usuario']['email']
+        # if validated_data['usuario']['password']:
+        #     instance.usuario.set_password(validated_data['usuario']['password'])
+        #     instance.usuario.save()
+        del validated_data['usuario']
         return super().update(instance, validated_data)
