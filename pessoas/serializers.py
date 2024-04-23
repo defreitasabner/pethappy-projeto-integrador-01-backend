@@ -2,7 +2,7 @@ from rest_framework import serializers
 from django.db import transaction
 from django.contrib.auth.models import User
 
-from pet_happy.models import Pessoa, Telefone, Endereco, Cliente, Funcionario
+from pessoas.models import Pessoa, Telefone, Endereco, Cliente, Funcionario
 
 
 class EnderecoSerializer(serializers.ModelSerializer):

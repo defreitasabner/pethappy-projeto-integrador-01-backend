@@ -1,7 +1,7 @@
 from rest_framework import viewsets
 
-from pet_happy.models import Cliente, Funcionario
-from pet_happy.serializers import ClienteSerializer, UpdateClienteSerializer, FuncionarioSerializer, UpdateFuncionarioSerializer
+from pessoas.models import Cliente, Funcionario
+from pessoas.serializers import ClienteSerializer, UpdateClienteSerializer, FuncionarioSerializer, UpdateFuncionarioSerializer
 
 
 class ClienteViewSet(viewsets.ModelViewSet):
