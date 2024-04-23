@@ -2,7 +2,7 @@ from rest_framework import serializers
 from django.db import transaction
 from django.contrib.auth.models import User
 
-from pessoas.models import Pessoa, Telefone, Endereco, Cliente, Funcionario
+from pessoas.models import *
 
 
 class EnderecoSerializer(serializers.ModelSerializer):
@@ -21,6 +21,16 @@ class PessoaSerializer(serializers.ModelSerializer):
     class Meta:
         model = Pessoa
         fields = ('id', 'nome', 'endereco', 'telefones')
+
+    @transaction.atomic
+    def create(self, validated_data):
+        pessoa = Pessoa.objects.create(nome = validated_data['pessoa']['nome'])
+        endereco = Endereco(pessoa = pessoa, **validated_data['pessoa']['endereco'])
+        endereco.save()
+        for dados_telefone in validated_data['pessoa']['telefones']:
+            telefone = Telefone(pessoa = pessoa, **dados_telefone)
+            telefone.save()
+        return pessoa
 
 class UpdateTelefoneSerializer(serializers.ModelSerializer):
     id = serializers.IntegerField()
@@ -156,3 +166,14 @@ class UpdateFuncionarioSerializer(serializers.ModelSerializer):
                     telefone = Telefone.objects.filter(id = dados_telefone['id'])
                     telefone.update(**dados_telefone)
         return instance
+    
+class VeterinarioSerializer(serializers.ModelSerializer):
+    pessoa = PessoaSerializer()
+    class Meta:
+        fields = ('id', 'pessoa', 'clinica')
+
+    @transaction.atomic
+    def create(self, validated_data):
+        pessoa = self.pessoa.create(validated_data = validated_data['pessoa'])
+        veterinario = Veterinario.objects.create(pessoa = pessoa, clinica = validated_data['clinica'])
+        return veterinario
