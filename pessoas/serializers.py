@@ -24,10 +24,10 @@ class PessoaSerializer(serializers.ModelSerializer):
 
     @transaction.atomic
     def create(self, validated_data):
-        pessoa = Pessoa.objects.create(nome = validated_data['pessoa']['nome'])
-        endereco = Endereco(pessoa = pessoa, **validated_data['pessoa']['endereco'])
+        pessoa = Pessoa.objects.create(nome = validated_data['nome'])
+        endereco = Endereco(pessoa = pessoa, **validated_data['endereco'])
         endereco.save()
-        for dados_telefone in validated_data['pessoa']['telefones']:
+        for dados_telefone in validated_data['telefones']:
             telefone = Telefone(pessoa = pessoa, **dados_telefone)
             telefone.save()
         return pessoa
@@ -170,10 +170,11 @@ class UpdateFuncionarioSerializer(serializers.ModelSerializer):
 class VeterinarioSerializer(serializers.ModelSerializer):
     pessoa = PessoaSerializer()
     class Meta:
+        model = Veterinario
         fields = ('id', 'pessoa', 'clinica')
 
     @transaction.atomic
     def create(self, validated_data):
-        pessoa = self.pessoa.create(validated_data = validated_data['pessoa'])
+        pessoa = PessoaSerializer().create(validated_data = validated_data['pessoa'])
         veterinario = Veterinario.objects.create(pessoa = pessoa, clinica = validated_data['clinica'])
         return veterinario

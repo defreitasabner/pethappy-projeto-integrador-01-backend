@@ -52,17 +52,14 @@ class PetSerializer(serializers.ModelSerializer):
 
     @transaction.atomic
     def create(self, validated_data):
-        tutor = Cliente.objects.filter(id = validated_data['tutor_id'])
-        categoria = Categoria.objects.filter(id = validated_data['categoria_id'])
-        porte = Categoria.objects.filter(id = validated_data['porte_id'])
         veterinario = None
         if validated_data.get('veterinario'):
-            veterinario = self.veterinario.create(validated_data = validated_data['veterinario'])
+            veterinario = VeterinarioSerializer().create(validated_data = validated_data['veterinario'])
         pet = Pet(
-            tutor = tutor,
+            tutor = validated_data['tutor_id'],
             veterinario = veterinario,
-            categoria = categoria,
-            porte = porte,
+            categoria = validated_data['categoria_id'],
+            porte = validated_data['porte_id'],
             nome = validated_data['nome'],
             data_nascimento = validated_data['data_nascimento'],
             sexo = validated_data['sexo'],
