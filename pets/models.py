@@ -23,12 +23,12 @@ class Porte(models.Model):
         max_length = 100,
         null = False,
         blank = False,
-    ),
+    )
     peso_min = models.IntegerField(
         verbose_name = 'Peso Mínimo',
         unique = True,
         null = False,
-    ),
+    )
     peso_max = models.IntegerField(
         verbose_name = 'Peso Máximo',
         unique = True,
@@ -57,7 +57,7 @@ class Pet(models.Model):
         max_length = 150,
         null = False,
         blank = False,
-    ),
+    )
     data_nascimento = models.DateField(
         verbose_name = 'Data de Nascimento / Adoção',
         null = False,
@@ -121,7 +121,7 @@ class Medicamento(models.Model):
         max_length = 300,
         null = False,
         blank = False,
-    ),
+    )
     observacoes = models.CharField(
         verbose_name = 'Outras Observações', 
         max_length = 300,
