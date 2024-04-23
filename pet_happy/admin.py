@@ -4,9 +4,9 @@ from pet_happy.models import Cliente
 
 
 class ClienteAdmin(admin.ModelAdmin):
-    list_display = ('id', 'nome', 'endereco')
-    list_display_links = ('id', 'nome')
-    search_fields = ('nome',)
+    list_display = ('id', 'pessoa')
+    list_display_links = ('id', 'pessoa')
+    search_fields = ('pessoa',)
     list_per_page = 20
 
 admin.site.register(Cliente, ClienteAdmin)
