@@ -79,4 +79,3 @@ class PetSerializer(serializers.ModelSerializer):
                 cuidado_especial = CuidadoEspecial(pet = pet, **dados_cuidado_especial)
                 cuidado_especial.save()
         return pet
-

@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 
 from pessoas.models import *
 
-
+#TODO: refatorar serializadores para evitar repetição de código
 class EnderecoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Endereco
