@@ -79,3 +79,15 @@ class PetSerializer(serializers.ModelSerializer):
                 cuidado_especial = CuidadoEspecial(pet = pet, **dados_cuidado_especial)
                 cuidado_especial.save()
         return pet
+
+class ListarPetsDoClienteSerializer(serializers.ModelSerializer):
+    """Serializador para listar informações sobre os pets de um cliente"""
+    categoria = serializers.ReadOnlyField(source = 'categoria.nome')
+    porte = serializers.ReadOnlyField(source = 'porte.descricao')
+    sexo = serializers.SerializerMethodField()
+    class Meta:
+        model = Pet
+        fields = ('id', 'nome', 'sexo', 'categoria', 'raca', 'porte')
+
+    def get_sexo(self, obj):
+        return obj.get_sexo_display()
