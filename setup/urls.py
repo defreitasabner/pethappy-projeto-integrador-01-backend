@@ -3,9 +3,9 @@ from django.urls import path, include
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from rest_framework import routers
 
-from pessoas.urls import pessoas_router
-from pets.urls import pets_router
-from pets.views import ListarPetsDoClienteView
+from apps.pessoas.urls import pessoas_router
+from apps.pets.urls import pets_router
+from apps.pets.views import ListarPetsDoClienteView
 
 router = routers.DefaultRouter()
 router.registry.extend(pessoas_router.registry)
