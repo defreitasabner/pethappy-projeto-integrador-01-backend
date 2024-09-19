@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework_simplejwt',
     'corsheaders',
+    'drf_yasg',
     'pessoas',
     'pets',
 ]
@@ -143,5 +144,5 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # CORS Settings
 CORS_ALLOWED_ORIGINS = [
-    'http://localhost:3000',
+    'http://localhost:4200',
 ]
