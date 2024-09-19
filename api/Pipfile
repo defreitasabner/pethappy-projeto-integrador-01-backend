@@ -10,6 +10,7 @@ markdown = "3.6"
 mysqlclient = "2.2.4"
 djangorestframework-simplejwt = "*"
 django-cors-headers = "*"
+drf-yasg = "*"
 
 [dev-packages]
 pytest = "*"
