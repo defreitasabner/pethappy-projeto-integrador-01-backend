@@ -2,17 +2,17 @@ class ClienteMock(object):
 
     CADASTRAR_DADOS_VALIDOS = {
         "pessoa": {
-            "nome": "Abner Silveira de Freitas",
+            "nome": "Cliente Válido da Silva",
             "endereco": {
                 "cidade": "Rio de Janeiro",
                 "bairro": "Tijuca",
-                "rua": "Delgado de Carvalho",
-                "numero": "84",
-                "complemento": "Na esquina com a rua Barão de Itapagipe"
+                "rua": "Rua qualquer",
+                "numero": "123",
+                "complemento": "Casa muito engraçada"
             },    
             "telefones": [
                 {
-                    "numero": "21983676303",
+                    "numero": "11234567890",
                     "is_contato_emergencia": True
                 }
             ]
@@ -21,7 +21,20 @@ class ClienteMock(object):
 
     CADASTRAR_DADOS_INVALIDOS = {
         "pessoa": {
-            "nome": "Abner Silveira de Freitas",
+            "nome": "",
+            "endereco": {
+                "cidade": "Rio de Janeiro",
+                "bairro": "Tijuca",
+                "rua": "Delgado de Carvalho",
+                "numero": "123",
+                "complemento": ""
+            },    
+            "telefones": [
+                {
+                    "numero": "11234567890",
+                    "is_contato_emergencia": True
+                }
+            ]
         }
     }
 
@@ -29,10 +42,10 @@ class ClienteMock(object):
         "pessoa": {
             "endereco": {
                 "cidade": "São Paulo",
-                "bairro": "Santa Cecília",
-                "rua": "Rua Barão de Tatuí",
-                "numero": "57",
-                "complemento": "Apartamento 81"
+                "bairro": "Centro",
+                "rua": "Rua Qualquer",
+                "numero": "32",
+                "complemento": "Logo ali"
             }
         }
     } 
