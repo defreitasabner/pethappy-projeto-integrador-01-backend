@@ -19,7 +19,7 @@ def populate_table_porte(apps, schema_editor):
         Porte(descricao = 'Pequeno', peso_min = 6, peso_max = 14),
         Porte(descricao = 'Médio', peso_min = 15, peso_max = 24),
         Porte(descricao = 'Grande', peso_min = 25, peso_max = 44),
-        Porte(descricao = 'Grande', peso_min = 45, peso_max = 100),
+        Porte(descricao = 'Enorme', peso_min = 45, peso_max = 100),
     ])
 
 class Migration(migrations.Migration):
