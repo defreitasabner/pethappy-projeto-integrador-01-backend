@@ -2,8 +2,8 @@ import pytest
 from rest_framework import status
 import json
 
-from .mocks.cliente_mock import ClienteMock
-from .mocks.pet_mock import PetMock
+from pessoas.tests.mocks.cliente_mock import ClienteMock
+from mocks.pet_mock import PetMock
 
 @pytest.mark.django_db
 class TestPet:
