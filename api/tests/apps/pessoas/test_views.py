@@ -4,8 +4,8 @@ from rest_framework import status
 import json
 
 from pessoas.models import Cliente, Funcionario
-from .mocks.cliente_mock import ClienteMock
-from .mocks.funcionario_mock import FuncionarioMock
+from tests.mocks.cliente_mock import ClienteMock
+from tests.mocks.funcionario_mock import FuncionarioMock
 
 @pytest.mark.django_db
 class TestClienteView:

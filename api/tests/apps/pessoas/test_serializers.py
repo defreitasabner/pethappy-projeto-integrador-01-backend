@@ -5,8 +5,8 @@ from pessoas.serializers import (
     ClienteSerializer, FuncionarioSerializer
 )
 from pessoas.models import Pessoa, Endereco, Telefone, Cliente
-from .mocks.cliente_mock import ClienteMock
-from .mocks.funcionario_mock import FuncionarioMock
+from tests.mocks.cliente_mock import ClienteMock
+from tests.mocks.funcionario_mock import FuncionarioMock
 
 @pytest.mark.teste_unidade
 class TestPessoaSerializer:
