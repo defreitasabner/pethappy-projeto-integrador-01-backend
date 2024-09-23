@@ -1,5 +1,5 @@
 pytest_plugins = [
-    'pessoas.tests.fixtures.api_clients',
+    'pessoas.tests.fixtures.clients',
     'pessoas.tests.fixtures.urls',
-    'pessoas.tests.fixtures.clientes',
+    'pessoas.tests.fixtures.pessoas_fixtures',
 ]
