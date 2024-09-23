@@ -2,22 +2,22 @@ class FuncionarioMock(object):
 
     CADASTRAR_DADOS_VALIDOS = {
         "usuario": {
-            "username": "abner",
+            "username": "rogerinho",
             "password": "12345678",
-            "email": "defreitasabner@gmail.com"
+            "email": "rogerinho_do_inga@xpto.com"
         },
         "pessoa": {
-            "nome": "Abner Silveira de Freitas",
+            "nome": "Rogerinho do Ingá",
             "endereco": {
-                "cidade": "Rio de Janeiro",
-                "bairro": "Tijuca",
-                "rua": "Delgado de Carvalho",
-                "numero": "84",
-                "complemento": "Na esquina com a rua Barão de Itapagipe"
+                "cidade": "Niterói",
+                "bairro": "Ingá",
+                "rua": "Rua Qualquer",
+                "numero": "42",
+                "complemento": ""
             },    
             "telefones": [
                 {
-                    "numero": "21983676303",
+                    "numero": "11234567890",
                     "is_contato_emergencia": True
                 }
             ]
@@ -26,7 +26,7 @@ class FuncionarioMock(object):
 
     CADASTRAR_DADOS_INVALIDOS = {
         "pessoa": {
-            "nome": "Abner Silveira de Freitas",
+            "nome": "Shrek",
         }
     }
 
