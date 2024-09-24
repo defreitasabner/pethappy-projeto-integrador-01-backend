@@ -13,9 +13,9 @@ class TestClienteView:
     def test_cadastrar_novo_cliente_com_dados_validos(
         self,
         obter_url, 
-        nao_autenticado_client
+        autenticado_client
     ):
-        response = nao_autenticado_client.post(
+        response = autenticado_client.post(
             obter_url('clientes'),
             json.dumps(ClienteMock.CADASTRAR_DADOS_VALIDOS),
             content_type = 'application/json',
@@ -25,9 +25,9 @@ class TestClienteView:
     def test_cadastrar_novo_cliente_com_dados_invalidos(
         self,
         obter_url,
-        nao_autenticado_client
+        autenticado_client
     ):
-        response = nao_autenticado_client.post(
+        response = autenticado_client.post(
             obter_url('clientes'),
             json.dumps(ClienteMock.CADASTRAR_DADOS_INVALIDOS),
             content_type = 'application/json',
@@ -38,10 +38,10 @@ class TestClienteView:
         self,
         obter_url,
         novo_cliente_db, 
-        nao_autenticado_client
+        autenticado_client
     ):
         cliente = novo_cliente_db(**ClienteMock.CADASTRAR_DADOS_VALIDOS)
-        response = nao_autenticado_client.put(
+        response = autenticado_client.put(
             obter_url('clientes', cliente.id),
             json.dumps(ClienteMock.ATUALIZAR_ENDERECO),
             content_type = 'application/json',
@@ -61,9 +61,9 @@ class TestFuncionarioView:
     def test_cadastrar_novo_funcionario_com_dados_validos(
         self,
         obter_url, 
-        nao_autenticado_client
+        autenticado_client
     ):
-        response = nao_autenticado_client.post(
+        response = autenticado_client.post(
             obter_url('funcionarios'),
             json.dumps(FuncionarioMock.CADASTRAR_DADOS_VALIDOS),
             content_type = 'application/json',
@@ -73,9 +73,9 @@ class TestFuncionarioView:
     def test_cadastrar_novo_funcionario_com_dados_invalidos(
         self,
         obter_url, 
-        nao_autenticado_client
+        autenticado_client
     ):
-        response = nao_autenticado_client.post(
+        response = autenticado_client.post(
             obter_url('funcionarios'),
             json.dumps(FuncionarioMock.CADASTRAR_DADOS_INVALIDOS),
             content_type = 'application/json',
@@ -86,10 +86,10 @@ class TestFuncionarioView:
         self,
         obter_url,
         novo_funcionario_db,
-        nao_autenticado_client
+        autenticado_client
     ):
         funcionario = novo_funcionario_db(**FuncionarioMock.CADASTRAR_DADOS_VALIDOS)
-        update_response = nao_autenticado_client.put(
+        update_response = autenticado_client.put(
             obter_url('funcionarios', funcionario.id),
             json.dumps(FuncionarioMock.ATUALIZAR_EMAIL),
             content_type = 'application/json',

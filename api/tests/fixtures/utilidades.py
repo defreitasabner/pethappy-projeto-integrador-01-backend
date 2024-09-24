@@ -1,5 +1,7 @@
 import pytest
 from django.urls import reverse
+from rest_framework.test import APIClient
+from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth.models import User
 
 @pytest.fixture
@@ -10,11 +12,15 @@ def obter_url():
         return reverse(f'{view_basename}-list')
     return gerar_url
 
-@pytest.fixture
+@pytest.fixture(scope = 'session')
 def nao_autenticado_client():
-    from rest_framework.test import APIClient
     return APIClient()
 
-@pytest.fixture
-def usuario_padrao_teste():
-    User.objects.create_user('teste', 'teste@teste.com', '12345678')
+@pytest.fixture(scope = 'session')
+def autenticado_client(django_db_blocker):
+    with django_db_blocker.unblock():
+        client = APIClient()
+        usuario = User.objects.first()
+        token = RefreshToken.for_user(usuario)
+        client.credentials(HTTP_AUTHORIZATION = f'Bearer {str(token.access_token)}')
+        return client

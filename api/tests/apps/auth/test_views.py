@@ -9,10 +9,8 @@ class TestAuthViews:
 
     def test_obtencao_de_token_bem_sucedida(
         self,
-        usuario_padrao_teste,
         nao_autenticado_client,
     ):
-
         dados = { 'username': 'teste', 'password': '12345678' }
         response = nao_autenticado_client.post(
             'http://localhost:8000/token/',
@@ -25,7 +23,7 @@ class TestAuthViews:
         self,
         nao_autenticado_client,
     ):
-        dados = { 'username': 'teste', 'password': '12345678' }
+        dados = { 'username': 'naoexiste', 'password': '87654321' }
         response = nao_autenticado_client.post(
             'http://localhost:8000/token/',
             json.dumps(dados),
