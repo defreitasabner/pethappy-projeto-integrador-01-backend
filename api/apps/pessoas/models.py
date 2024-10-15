@@ -86,6 +86,9 @@ class Cliente(models.Model):
         super().delete(*args, **kwargs)
         if self.pessoa:
             self.pessoa.delete()
+    
+    class Meta:
+        ordering = ['pessoa__nome',]
 
 class Funcionario(models.Model):
     usuario = models.OneToOneField(
@@ -109,6 +112,9 @@ class Funcionario(models.Model):
     
     def __str__(self) -> str:
         return self.nome
+    
+    class Meta:
+        ordering = ['pessoa__nome',]
 
 #TODO: Estudar a real necessidade de ser ter um novo modelo, talvez usar Pessoa diretamente
 class Veterinario(models.Model):
@@ -127,3 +133,6 @@ class Veterinario(models.Model):
 
     def __str__(self) -> str:
         return self.pessoa
+    
+    class Meta:
+        ordering = ['pessoa__nome',]
