@@ -17,7 +17,7 @@ class TestPetView:
         cliente = novo_cliente_db(**ClienteMock.CADASTRAR_DADOS_VALIDOS)
         response = autenticado_client.post(
             obter_url('pets'),
-            json.dumps(PetMock.cadastrar_dados_validos(cliente_id = cliente.id)),
+            json.dumps(PetMock.cadastrar_minimo_dados_necessarios(cliente_id = cliente.id)),
             content_type = 'application/json',
         )
         assert response.status_code == status.HTTP_201_CREATED

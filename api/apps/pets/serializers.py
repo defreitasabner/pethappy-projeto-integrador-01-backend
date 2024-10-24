@@ -1,4 +1,4 @@
-from rest_framework import serializers
+from rest_framework import serializers, fields
 from django.db import transaction
 
 from pets.models import *
@@ -31,6 +31,7 @@ class CuidadoEspecialSerializer(serializers.ModelSerializer):
 
 class PetSerializer(serializers.ModelSerializer):
     tutor = ClienteSerializer(read_only = True)
+    data_nascimento = fields.DateField(input_formats=['%Y-%m-%d', '%Y-%m-%dT%H:%M:%S.%fZ'])
     categoria = CategoriaSerializer(read_only = True)
     porte = PorteSerializer(read_only = True)
     medicamentos = MedicamentoSerializer(many = True, required = False)
@@ -79,6 +80,18 @@ class PetSerializer(serializers.ModelSerializer):
                 cuidado_especial = CuidadoEspecial(pet = pet, **dados_cuidado_especial)
                 cuidado_especial.save()
         return pet
+    
+    @transaction.atomic
+    def update(self, instance, validated_data):
+        instance.tutor = validated_data['tutor_id']
+        instance.nome = validated_data['nome']
+        instance.raca = validated_data['raca']
+        instance.sexo = validated_data['sexo']
+        instance.data_nascimento = validated_data['data_nascimento']
+        instance.categoria = validated_data['categoria_id']
+        instance.porte = validated_data['porte_id']
+        instance.save()
+        return instance
 
 class ListarPetsDoClienteSerializer(serializers.ModelSerializer):
     """Serializador para listar informações sobre os pets de um cliente"""
