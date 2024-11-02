@@ -1,5 +1,5 @@
 from django.db import models
-from pessoas.models import Cliente, Veterinario
+from pessoas.models import Cliente
 
 class Categoria(models.Model):
     nome = models.CharField(
@@ -45,11 +45,11 @@ class Pet(models.Model):
         related_name = 'pets',
         on_delete = models.CASCADE,
     )
-    veterinario = models.ForeignKey(
+    veterinario = models.TextField(
         Veterinario,
         verbose_name = 'Veterinário',
         related_name = 'pets',
-        on_delete = models.DO_NOTHING,
+        blank=True,
         null = True,
     )
     nome = models.CharField(
@@ -62,6 +62,20 @@ class Pet(models.Model):
         verbose_name = 'Data de Nascimento / Adoção',
         null = False,
     )
+    alimentacao = models.TextField(
+        blank=True, 
+        null=True
+    )
+    cuidadoespecial = models.TextField(
+        blank=True,
+        null=True
+    )
+    medicamento = models.TextField(
+        blank=True, 
+        null=True
+    )
+
+
     INDETERMINADO = 'I'
     SEX_CHOICES = [
         ('F', 'Fêmea'),
@@ -100,109 +114,65 @@ class Pet(models.Model):
     def __str__(self) -> str:
         return self.nome
     
-class Medicamento(models.Model):
-    pet = models.ForeignKey(
-        Pet,
-        verbose_name = 'Pet',
-        related_name = 'medicamentos',
-        on_delete = models.CASCADE,
-        null = False,
-        blank = False,
-    )
-    nome = models.CharField(
-        verbose_name = 'Nome do Medicamento',
-        max_length = 150,
-        null = False,
-        blank = False, 
-    )
-    posologia = models.CharField(
-        verbose_name = 'Posologia',
-        help_text = 'Informações sobre horário, frequência e quantidades das doses.',
-        max_length = 300,
-        null = False,
-        blank = False,
-    )
-    observacoes = models.CharField(
-        verbose_name = 'Outras Observações', 
-        max_length = 300,
-        null = False,
-        blank = True,
+class Servico(models.Model):
+    STATUSSERVICO_CHOICES = (
+        ("Orcado"), ("Aprovado"),("Executado"),("Cancelado")
     )
 
-    def __str__(self) -> str:
-        return self.nome
-    
-class Alimento(models.Model):
-    pet = models.ForeignKey(
-        Pet,
-        verbose_name = 'Pet',
-        related_name = 'alimentos',
-        on_delete = models.CASCADE,
-        null = False,
-        blank = False,
+
+    datahorasolic=models.DateTimeField()
+    valororcado=models.DecimalField(
+        max_length=3, 
+        decimal_places=2
     )
-    descricao = models.CharField(
-        verbose_name = 'Descrição do Alimento (Nome)',
-        max_length = 150,
-        null = False,
-        blank = False, 
+    valorfaturado=models.DecimalField(
+        max_length=3,
+        decimal_places=2
     )
-    quantidade = models.CharField(
-        verbose_name = 'Descrição da Quantidade',
-        max_length = 150,
-        null = False,
-        blank = False, 
+    datahorainicio=models.DateTimeField()
+    datehorafim=models.DateTimeField()
+    statusservico=models.CharField(
+        max_length=15,
+          blank=False, 
+          null=False, 
+          choices=STATUSSERVICO_CHOICES
     )
-    periodo = models.CharField(
-        verbose_name = 'Período',
-        max_length = 100,
-        null = False,
-        blank = False, 
+    observacao = models.TextField(
+        blank=True,
+        null=True
     )
-    local = models.CharField(
-        verbose_name = 'Local',
-        max_length = 300,
-        null = False,
-        blank = False,
+    funcionario=models.ForeignKey(
+        Funcionario, 
+        on_delete=models.CASCADE
     )
-    observacoes = models.CharField(
-        verbose_name = 'Outras Observações',
-        max_length = 300,
-        null = False,
-        blank = True,
+    tiposervico=models.ForeignKey(
+        Tiposervico,
+        on_delete=models.CASCADE
+    )
+    pet=models.ManyToManyField(
+        Pet, 
+        on_delete=models.CASCADE
+    )
+    turminha=models.ForeignKey(
+        Turminha,on_delete=models.CASCADE
     )
 
-    def __str__(self) -> str:
-        return f'{self.descricao}: {self.periodo} ({self.local})'
-    
-class CuidadoEspecial(models.Model):
-    pet = models.ForeignKey(
-        Pet,
-        verbose_name = 'Pet',
-        related_name = 'cuidados_especiais',
-        on_delete = models.CASCADE,
-        null = False,
-        blank = False,
+    def __str__(self):
+        return self.pet.nome     
+class Turminha(models.Model):
+    datahorainicio=models.DateTimeField()
+    datahorafim=models.DateTimeField()
+    funcionario=models.ForeignKey(
+        Funcionario, 
+        on_delete=models.CASCADE
     )
-    OUTROS = 'O'
-    TIPO_CHOICES = [
-        (OUTROS, 'Outros'),
-        ('D', 'Doença'),
-        ('E', 'Emocional'),
-    ]
-    tipo = models.CharField(
-        verbose_name = 'Tipo de Cuidado',
-        max_length = 1,
-        choices = TIPO_CHOICES,
-        default = OUTROS,
-        null = False,
-    )
-    descricao = models.CharField(
-        verbose_name = 'Descrição do Cuidado Especial',
-        max_length = 300,
-        null = False,
-        blank = False,
+    totalvagas=models.IntegerField()
+    vagasocupadas=models.IntegerField()
+    tiposervico=models.ForeignKey(
+        Tiposervico, 
+        on_delete=models.CASCADE
     )
 
-    def __str__(self) -> str:
-        return self.tipo
+    def __str__(self):
+        return self.tiposervico.tiposerv
+
