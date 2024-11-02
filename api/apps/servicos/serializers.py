@@ -31,6 +31,19 @@ class ServicoSerializer(serializers.ModelSerializer):
             data_hora_fim = validated_data.get('data_hora_fim'),
         )
         servico.save()
-        servico.pets.set(validated_data['pets_ids'])
+        if validated_data.get('pets_ids'):
+            servico.pets.set(validated_data['pets_ids'])
         return servico
+    
+    @transaction.atomic
+    def update(self, instance, validated_data):
+        instance.funcionario = validated_data.get('funcionario_id')
+        instance.tipo = validated_data.get('tipo')
+        instance.status = validated_data.get('status')
+        instance.data_hora_inicio = validated_data.get('data_hora_inicio')
+        instance.data_hora_fim = validated_data.get('data_hora_fim')
+        if validated_data.get('pets_ids'):
+            instance.pets.set(validated_data['pets_ids'])
+        instance.save()
+        return instance
 
