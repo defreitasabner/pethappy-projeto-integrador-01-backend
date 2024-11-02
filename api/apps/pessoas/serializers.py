@@ -148,14 +148,4 @@ class UpdateFuncionarioSerializer(serializers.ModelSerializer):
             instance.pessoa.save()
         return instance
     
-class VeterinarioSerializer(serializers.ModelSerializer):
-    pessoa = PessoaSerializer()
-    class Meta:
-        model = Veterinario
-        fields = ('id', 'pessoa', 'clinica')
 
-    @transaction.atomic
-    def create(self, validated_data):
-        pessoa = PessoaSerializer().create(validated_data = validated_data['pessoa'])
-        veterinario = Veterinario.objects.create(pessoa = pessoa, clinica = validated_data['clinica'])
-        return veterinario
