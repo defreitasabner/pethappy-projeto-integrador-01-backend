@@ -111,7 +111,7 @@ class Funcionario(models.Model):
         self.usuario.delete()
     
     def __str__(self) -> str:
-        return self.nome
+        return self.pessoa.nome
     
     class Meta:
         ordering = ['pessoa__nome',]
