@@ -7,11 +7,13 @@ from drf_yasg import openapi
 
 from apps.pessoas.urls import pessoas_router
 from apps.pets.urls import pets_router
+from apps.servicos.urls import servicos_router
 from apps.pets.views import ListarPetsDoClienteView
 
 router = routers.DefaultRouter()
 router.registry.extend(pessoas_router.registry)
 router.registry.extend(pets_router.registry)
+router.registry.extend(servicos_router.registry)
 
 schema_view = get_schema_view(
    openapi.Info(
