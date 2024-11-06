@@ -111,28 +111,8 @@ class Funcionario(models.Model):
         self.usuario.delete()
     
     def __str__(self) -> str:
-        return self.nome
+        return self.pessoa.nome
     
     class Meta:
         ordering = ['pessoa__nome',]
 
-#TODO: Estudar a real necessidade de ser ter um novo modelo, talvez usar Pessoa diretamente
-class Veterinario(models.Model):
-    pessoa = models.OneToOneField(
-        Pessoa,
-        verbose_name = 'Pessoa',
-        related_name = 'veterinario',
-        on_delete = models.CASCADE,
-    )
-    clinica = models.CharField(
-        verbose_name = 'Nome da Clínica',
-        max_length = 150,
-        null = False,
-        blank = False
-    )
-
-    def __str__(self) -> str:
-        return self.pessoa
-    
-    class Meta:
-        ordering = ['pessoa__nome',]
