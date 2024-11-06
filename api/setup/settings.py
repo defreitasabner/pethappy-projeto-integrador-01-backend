@@ -83,16 +83,44 @@ WSGI_APPLICATION = 'setup.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
+#DATABASES = {
+#    'default': {
+#        'ENGINE': os.environ.get('DB_ENGINE', 'django.db.backends.sqlite3'),
+#        'NAME': os.environ.get('DB_NAME', os.path.join(BASE_DIR, 'db.sqlite3')),
+#        'USER': os.environ.get('DB_USER', None),
+#        'PASSWORD': os.environ.get('DB_PASSWORD', None),
+#        'HOST': os.environ.get('DB_HOST', None),
+#        'PORT': os.environ.get('DB_PORT', None),
+#    }
+#}
+
+#DATABASES = {
+#    'default': {
+#        'ENGINE': 'django.db.backends.oracle',
+#        'NAME': 'PetHappyDB',  # Nome do seu banco de dados
+#        'USER': 'ADMIN',  # Nome do usuário do banco de dados
+#        'PASSWORD': 'P3tH@ppYD@t@B@s3',  # Senha do usuário
+#        'HOST': 'adb.sa-saopaulo-1.oraclecloud.com',  # Endereço do host, geralmente é o endpoint do Autonomous Database
+#        'PORT': '1522',  # Porta padrão para Oracle
+#    }
+#}
+
 DATABASES = {
     'default': {
-        'ENGINE': os.environ.get('DB_ENGINE', 'django.db.backends.sqlite3'),
-        'NAME': os.environ.get('DB_NAME', os.path.join(BASE_DIR, 'db.sqlite3')),
-        'USER': os.environ.get('DB_USER', None),
-        'PASSWORD': os.environ.get('DB_PASSWORD', None),
-        'HOST': os.environ.get('DB_HOST', None),
-        'PORT': os.environ.get('DB_PORT', None),
+        'ENGINE': 'django.db.backends.oracle',
+        'NAME': '(description= (retry_count=20)(retry_delay=3)(address=(protocol=tcps)(port=1522)(host=adb.sa-saopaulo-1.oraclecloud.com))(connect_data=(service_name=gc085d3344163a8_pethappydb_tpurgent.adb.oraclecloud.com))(security=(ssl_server_dn_match=yes)))',
+        'USER': 'ADMIN',
+        'PASSWORD': 'P3tH@ppYD@t@B@s3',
+        'HOST': '',  # Deixe em branco, pois está no DSN
+        'PORT': '',  # Deixe em branco, pois está no DSN
+        'OPTIONS': {
+            'config_dir': 'C:/Projetos/PetHappyBack/pethappy-projeto-integrador-01-backend/infra/oracledb',
+            'wallet_location': 'C:/Projetos/PetHappyBack/pethappy-projeto-integrador-01-backend/infra/oracledb',
+            'wallet_password': 'dsf29788',
+        },
     }
 }
+
 
 
 # Password validation
